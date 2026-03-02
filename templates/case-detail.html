@@ -1,0 +1,20 @@
+{% load static %}
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <title>{{ case.title }}</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+  <h1>{{ case.title }}</h1>
+  {% if case.subtitle %}<p>{{ case.subtitle }}</p>{% endif %}
+  {% if case.description %}<p>{{ case.description }}</p>{% endif %}
+
+  {% for img in case.images.all %}
+    <div class="case-image scale-{{ img.scale }}">
+      <img src="{{ img.image.url }}" alt="{{ img.caption|default:case.title }}">
+    </div>
+  {% endfor %}
+</body>
+</html>
