@@ -151,8 +151,6 @@
                                 <span>Кейсы</span>
                             </div>
                             <div class="main-all-portfolio">
-                                
-
                                 <a href="{% url 'techimpuls' %}" class="main-portfolio-us-block stBlock">
                                     <div class="main-portfolio-img">
                                         <img src="{% static 'img/techimpuls/avatar.webp' %}" alt="">
@@ -164,33 +162,110 @@
                                         <span>Разработка сайта/дизайн</span>
                                     </div>
                                 </a>
+                                <a href="{% url 'triphouse' %}" class="main-portfolio-us-block stBlock">
+                                    <div class="main-portfolio-img">
+                                        <img src="{% static 'img/techimpuls/avatar.webp' %}" alt="">
 
+                                    </div>
+                                    <div class="title GoM">
+                                        <span>TripHouse</span>
+                                    </div>
+                                    <div class="subtitle GoL">
+                                        <span>Веб-приложение/мобильное приложение</span>
+                                    </div>
+                                </a>
+                                <a href="{% url 'moloko' %}" class="main-portfolio-us-block rdBlock">
+                                    <div class="main-portfolio-img">
+                                        <img src="{% static 'img/moloko/mainPhoto.webp' %}" alt="">
+                                    </div>
+                                    <div class="title GoM">
+                                        <span>Moloko-interior</span>
+                                    </div>
+                                    <div class="subtitle GoL">
+                                        <span>Веб-приложение/Дизайн</span>
+                                    </div>
+                                </a>
+                                <a href="{% url 'sdelkipro' %}" class="main-portfolio-us-block rdBlock">
+                                    <div class="main-portfolio-img">
+                                         <img src="{% static 'img/stBlock.webp' %}" alt="">
+                                    </div>
+                                    <div class="title GoM">
+                                        <span>Новостройки от застройщиков - Сделки.pro</span>
+                                    </div>
+                                    <div class="subtitle GoL">
+                                        <span>Разработка сайта</span>
+                                    </div>
+                                </a>
+            
+                                <a target="_blank" href="korobka.pdf" class="main-portfolio-us-block leBlock">
+                                    <div class="main-portfolio-img">
+                                        <img src="{% static 'img/leBlock.webp' %}" alt="">
+                                    </div>
+                                    <div class="title GoM">
+                                        <span>Коробка - выходи поиграть</span>
+                                    </div>
+                                    <div class="subtitle GoL">
+                                        <span>Веб-приложение</span>
+                                    </div>
+                                </a>
+            
+                                <a href="{% url 'bookingrent' %}" class="main-portfolio-us-block rdBlock">
+                                    <div class="main-portfolio-img">
+                                        <img src="{% static 'img/rdBlock.webp' %}" alt="">
+                                    </div>
+                                    <div class="title GoM">
+                                        <span>Bookingrent</span>
+                                    </div>
+                                    <div class="subtitle GoL">
+                                        <span>Интернет-магазин</span>
+                                    </div>
+                                </a>
 
+                                <a target="_blank" href="money-car.html" class="main-portfolio-us-block leBlock">
+                                    <div class="main-portfolio-img">
+                                        <img src="{% static 'img/money-main.webp' %}" alt="">
+                                    </div>
+                                    <div class="title GoM">
+                                        <span>1-MONEY-CAR</span>
+                                    </div>
+                                    <div class="subtitle GoL">
+                                        <span>Landing-page</span>
+                                    </div>
+                                </a>
 
+                                <a href="cryptolife.html" class="main-portfolio-us-block stBlock">
+                                    <div class="main-portfolio-img">
+                                        <img src="{% static 'img/cryptoMain.webp' %}" alt="">
+                                    </div>
+                                    <div class="title GoM">
+                                        <span>CryptoLife</span>
+                                    </div>
+                                    <div class="subtitle GoL">
+                                        <span>Веб-приложение/Мобильное приложение/дизайн</span>
+                                    </div>
+                                </a>
 
+                                {# Автокейсы из админки — всегда ниже хардкода #}
                                 {% for case in cases %}
-                                    <a href="{% url 'case_detail' case.slug %}" class="main-portfolio-us-block stBlock">
-                                        <div class="main-portfolio-img">
-                                            {% with img=case.images.all.0 %}
-                                                {% if img %}
-                                                    <img src="{{ img.image.url }}" alt="{{ case.title }}">
-                                                {% else %}
-                                                    <img src="{% static 'img/stBlock.webp' %}" alt="{{ case.title }}">
-                                                {% endif %}
-                                            {% endwith %}
-                                        </div>
-
-                                        <div class="title GoM">
-                                            <span>{{ case.title }}</span>
-                                        </div>
-
-                                        {% if case.subtitle %}
-                                            <div class="subtitle GoL">
-                                                <span>{{ case.subtitle }}</span>
-                                            </div>
-                                        {% endif %}
-                                    </a>
+                                <a href="{% url 'case_detail' slug=case.slug %}" class="main-portfolio-us-block stBlock">
+                                    <div class="main-portfolio-img">
+                                    {% if case.cover_image %}
+                                        <img src="{{ case.cover_image.url }}" alt="">
+                                    {% else %}
+                                        <img src="{% static 'img/stBlock.webp' %}" alt="">
+                                    {% endif %}
+                                    </div>
+                                    <div class="title GoM">
+                                    <span>{{ case.title }}</span>
+                                    </div>
+                                    {% if case.subtitle %}
+                                    <div class="subtitle GoL">
+                                    <span>{{ case.subtitle }}</span>
+                                    </div>
+                                    {% endif %}
+                                </a>
                                 {% endfor %}
+
 
                             </div>
                         

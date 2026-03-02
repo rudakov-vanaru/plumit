@@ -32,7 +32,7 @@ def sdelkipro(request):
     return render(request, "sdelkipro.html")
 
 def works(request):
-    cases = Case.objects.filter(is_published=True).prefetch_related("images")
+    cases = Case.objects.filter(is_published=True).prefetch_related("images").order_by("created_at")
     return render(request, "our-works.html", {"cases": cases})
 
 def case_detail(request, slug):

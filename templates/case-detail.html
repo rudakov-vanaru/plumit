@@ -1,20 +1,175 @@
 {% load static %}
-<!doctype html>
-<html lang="ru">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <title>{{ case.title }}</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="{% static 'img/favicon.ico' %}" type="image/x-icon">
+  <link rel="stylesheet" href="{% static 'css/load.css' %}">
+  <link rel="stylesheet" href="{% static 'css/loaded.css' %}">
+  <link rel="stylesheet" href="{% static 'css/normalize.css' %}">
   <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
+  <link rel="stylesheet" href="{% static 'css/swiper.css' %}">
+  <link rel="stylesheet" href="{% static 'css/checkbox.css' %}">
+  <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
+  <link rel="stylesheet" href="{% static 'css/modal.css' %}">
+  <title>PlumIT - {{ case.title }}</title>
 </head>
 <body>
-  <h1>{{ case.title }}</h1>
-  {% if case.subtitle %}<p>{{ case.subtitle }}</p>{% endif %}
-  {% if case.description %}<p>{{ case.description }}</p>{% endif %}
 
-  {% for img in case.images.all %}
-    <div class="case-image scale-{{ img.scale }}">
-      <img src="{{ img.image.url }}" alt="{{ img.caption|default:case.title }}">
+<main>
+  <div class="main-window page-case">
+    <div class="block-img-main">
+      {% if case.hero_image %}
+        <img src="{{ case.hero_image.url }}" alt="">
+      {% else %}
+        <img src="{% static 'img/services/servicesBckMain.webp' %}" alt="">
+      {% endif %}
     </div>
-  {% endfor %}
+
+    <div class="container" style="z-index: 9;">
+      <div class="header desk-header">
+        <a href="{% url 'home' %}" class="header-logo">PLUMIT</a>
+        <div class="header-nav GoR">
+          <a href="{% url 'home' %}"><span>Главная</span></a>
+          <a href="{% url 'works' %}"><span>Кейсы</span></a>
+          <a href="{% url 'services' %}"><span>Услуги</span></a>
+          <a href="#footer"><span>Контакты</span></a>
+        </div>
+      </div>
+
+      <div class="main-window-text">
+        {% if case.subtitle %}
+        <div class="main-window-subtitle GoR">
+          <span>{{ case.subtitle }}</span>
+        </div>
+        {% endif %}
+
+        <div class="main-window-title GoM">
+          <span>{{ case.title }}</span>
+        </div>
+
+        {% if case.description %}
+        <div class="main-window-subtitle-desc GoL">
+          <span>{{ case.description|linebreaksbr }}</span>
+        </div>
+        {% endif %}
+
+        <div class="main-window-button">
+          <a href="#contact-form" class="GoM"><span>Оставить заявку</span></a>
+        </div>
+      </div>
+
+      {% if case.mockup_image %}
+      <div class="main-mockup sdelki">
+        <img src="{{ case.mockup_image.url }}" alt="">
+      </div>
+      {% endif %}
+    </div>
+
+    <div class="bck-sphera-main-wind">
+      <div class="block-sphera-main">
+        <img src="{% static 'img/spheraMain.webp' %}" alt="">
+      </div>
+    </div>
+  </div>
+
+  <div class="page-case descr">
+    <div class="container">
+
+      {% if case.task_text %}
+      <div class="block-descr descr-pd-bottom">
+        <div class="title-descr GoM"><span>Задача</span></div>
+        <div class="subtitle-descr GoL"><span>{{ case.task_text|linebreaksbr }}</span></div>
+      </div>
+      {% endif %}
+
+      {% if case.execution_text %}
+      <div class="block-descr descr-line">
+        <div class="title-descr GoM"><span>Исполнение</span></div>
+        <div class="subtitle-descr GoL"><span>{{ case.execution_text|linebreaksbr }}</span></div>
+      </div>
+      {% endif %}
+
+      {% if case.result_text %}
+      <div class="block-descr descr-pd-top">
+        <div class="title-descr GoM"><span>Достигнутый результат</span></div>
+        <div class="subtitle-descr GoL"><span>{{ case.result_text|linebreaksbr }}</span></div>
+      </div>
+      {% endif %}
+
+    </div>
+  </div>
+
+  <div class="info-page-case">
+    <div class="container">
+      <div class="block-desk-vr">
+        <div class="text-block-desk">
+          <div class="title-block-desk GoM">
+            <span><span class="gradient-text">Desktop</span> версия</span>
+          </div>
+          {% if case.desktop_text %}
+          <div class="subtitle-block-desk GoL">
+            <span>{{ case.desktop_text|linebreaksbr }}</span>
+          </div>
+          {% endif %}
+        </div>
+{% if case.desktop_image %}
+        <div class="img-block-desk">
+          <img src="{{ case.desktop_image.url }}" alt="">
+        </div>
+        {% endif %}
+      </div>
+    </div>
+
+    {# Галерея: добавляется через inline CaseImage в админке #}
+    {% for img in case.images.all %}
+    <div class="container">
+        <div class="task page-case">
+        <div class="img-task {% if img.scale != 100 %}img-task--scaled{% endif %}" style="--w: {{ img.scale }}%;">
+            <img src="{{ img.image.url }}" alt="">
+        </div>
+
+        {% if img.caption %}
+        <div class="subtitle-task GoL" style="margin-top: 12px;">
+            <span>{{ img.caption }}</span>
+        </div>
+        {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+
+    <div class="container">
+      <div class="block-desk-vr mobile-adapt">
+        <div class="text-block-desk">
+          <div class="title-block-desk GoM">
+            <span><span class="gradient-text">Мобильная</span> версия</span>
+          </div>
+          {% if case.mobile_text %}
+          <div class="subtitle-block-desk GoL">
+            <span>{{ case.mobile_text|linebreaksbr }}</span>
+          </div>
+          {% endif %}
+        </div>
+
+        {% if case.mobile_image %}
+        <div class="img-block-desk imb-mobile-desk">
+          <img src="{{ case.mobile_image.url }}" alt="">
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  {# ниже — твоя форма/футер можно оставить как в techimpuls.html (не меняя) #}
+  {% include "base.html" %}
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<script src="https://snipp.ru/cdn/maskedinput/jquery.maskedinput.min.js"></script>
+<script src="{% static 'js/script.js' %}"></script>
+<script src="{% static 'telegramform/js/telegramform.js' %}"></script>
 </body>
 </html>

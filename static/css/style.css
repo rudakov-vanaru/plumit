@@ -1864,3 +1864,4 @@ footer .container{
 .case-image.scale-40 img { width: 40%; }
 .case-image.scale-60 img { width: 60%; }
 .case-image.scale-100 img { width: 100%; }
+.img-task--scaled { max-width: var(--w); margin: 0 auto; }
