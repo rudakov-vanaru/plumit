@@ -247,20 +247,20 @@
 
                                 {# Автокейсы из админки — всегда ниже хардкода #}
                                 {% for case in cases %}
-                                <a href="{% url 'case_detail' slug=case.slug %}" class="main-portfolio-us-block stBlock">
-                                    <div class="main-portfolio-img">
-                                    {% if case.cover_image %}
-                                        <img src="{{ case.cover_image.url }}" alt="">
-                                    {% else %}
-                                        <img src="{% static 'img/stBlock.webp' %}" alt="">
-                                    {% endif %}
-                                    </div>
+                                <a href="{% url 'case_detail' slug=case.slug %}" class="main-portfolio-us-block {% if case.cover_scale == 100 %}rdBlock{% elif case.cover_scale == 60 %}stBlock{% else %}leBlock{% endif %}">
+                                <div class="main-portfolio-img" style="--s: {{ case.cover_scale|default:100 }};">
+                                {% if case.cover_image %}
+                                    <img class="cover-img" src="{{ case.cover_image.url }}" alt="">
+                                {% else %}
+                                    <img class="cover-img" src="{% static 'img/stBlock.webp' %}" alt="">
+                                {% endif %}
+                                </div>
                                     <div class="title GoM">
-                                    <span>{{ case.title }}</span>
+                                        <span>{{ case.title }}</span>
                                     </div>
                                     {% if case.subtitle %}
                                     <div class="subtitle GoL">
-                                    <span>{{ case.subtitle }}</span>
+                                        <span>{{ case.subtitle }}</span>
                                     </div>
                                     {% endif %}
                                 </a>

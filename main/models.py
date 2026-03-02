@@ -7,6 +7,22 @@ class Case(models.Model):
     subtitle = models.CharField("Подзаголовок", max_length=255, blank=True)
     description = models.TextField("Описание (под заголовком)", blank=True)
 
+    COVER_SCALE_40 = 40
+    COVER_SCALE_60 = 60
+    COVER_SCALE_100 = 100
+    COVER_SCALE_CHOICES = (
+        (COVER_SCALE_40, "40%"),
+        (COVER_SCALE_60, "60%"),
+        (COVER_SCALE_100, "100%"),
+    )
+    cover_scale = models.PositiveSmallIntegerField(
+        "Масштаб обложки (для списка)",
+        choices=COVER_SCALE_CHOICES,
+        default=COVER_SCALE_100,
+    )
+
+
+
     # NEW: картинки как в techimpuls.html
     cover_image = models.ImageField("Обложка для списка (avatar)", upload_to="cases/cover/", blank=True, null=True)
     hero_image = models.ImageField("Главная картинка (фон сверху)", upload_to="cases/hero/", blank=True, null=True)
@@ -35,7 +51,7 @@ class Case(models.Model):
         verbose_name_plural = "Кейсы"
         ordering = ["created_at"]  # чтобы новые шли вниз
 
-    def str(self):
+    def __str__(self):
         return self.title
 
 
@@ -61,5 +77,5 @@ class CaseImage(models.Model):
         verbose_name_plural = "Фото кейса"
         ordering = ["sort", "id"]
 
-    def str(self):
+    def __str__(self):
         return f"{self.case.title} — {self.get_scale_display()}"
