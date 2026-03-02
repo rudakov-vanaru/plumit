@@ -6,7 +6,7 @@ from .models import Case, CaseImage
 class CaseImageInline(admin.TabularInline):
     model = CaseImage
     extra = 1
-    fields = ("image", "scale", "caption", "sort")
+    fields = ("image", "scale", "title", "subtitle", "sort")
     ordering = ("sort",)
 
 

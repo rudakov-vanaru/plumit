@@ -52,7 +52,8 @@ class CaseImage(models.Model):
     case = models.ForeignKey(Case, on_delete=models.CASCADE, related_name="images", verbose_name="Кейс")
     image = models.ImageField("Фото", upload_to="cases/gallery/")
     scale = models.PositiveSmallIntegerField("Масштаб", choices=SCALE_CHOICES, default=SCALE_100)
-    caption = models.CharField("Подпись", max_length=255, blank=True)
+    title = models.CharField("Заголовок под фото", max_length=200, blank=True)
+    subtitle = models.TextField("Текст под фото", blank=True)
     sort = models.PositiveIntegerField("Порядок", default=0)
 
     class Meta:
