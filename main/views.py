@@ -5,10 +5,27 @@ from dotenv import load_dotenv
 
 from django.shortcuts import render, get_object_or_404
 from .models import Case
+from django.db.models import Case as DCase, When, Value, IntegerField
+
+home_cases = (
+    Case.objects.filter(is_published=True, show_on_home=True)
+    .annotate(
+        home_sort=DCase(
+            When(home_position__in=[1, 2, 3], then="home_position"),
+            default=Value(99),
+            output_field=IntegerField(),
+        )
+    )
+    .order_by("home_sort", "created_at")
+)
 
 
 def index(request):
-    return render(request, 'index.html')
+    home_cases = (
+        Case.objects.filter(is_published=True, show_on_home=True)
+        .order_by("home_position", "created_at")
+    )
+    return render(request, "index.html", {"home_cases": home_cases})
 
 def services(request):
     return render(request, 'services.html')
