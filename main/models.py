@@ -41,8 +41,35 @@ class Case(models.Model):
         blank=True,
         null=True,
     )
-
     cover_alt = models.CharField("Alt обложки", max_length=255, blank=True)
+
+        # Показ и порядок на странице our-works
+    show_on_works = models.BooleanField("Показывать на странице 'Наши проекты'", default=True)
+
+    works_block = models.PositiveIntegerField(
+        "Блок на странице 'Наши проекты' (ряд)",
+        blank=True,
+        null=True,
+    )
+
+    WORKS_POS_EMPTY = 0
+    WORKS_POS_1 = 1
+    WORKS_POS_2 = 2
+    WORKS_POS_3 = 3
+    WORKS_POS_CHOICES = (
+        (WORKS_POS_EMPTY, "Пустая позиция"),
+        (WORKS_POS_1, "1"),
+        (WORKS_POS_2, "2"),
+        (WORKS_POS_3, "3"),
+    )
+
+    works_position = models.PositiveSmallIntegerField(
+        "Позиция в блоке (1-3)",
+        choices=WORKS_POS_CHOICES,
+        blank=True,
+        null=True,
+    )
+
 
 
 
@@ -78,13 +105,18 @@ class Case(models.Model):
             models.UniqueConstraint(
                 fields=["home_position"],
                 condition=Q(show_on_home=True) & Q(home_position__in=[1, 2, 3]),
-                name="uniq_home_position_1_3_when_show_on_home",
-            ),
+                name="uniq_home_position_1_3_when_show_on_home",),
             models.CheckConstraint(
                 condition=Q(home_position__in=[0, 1, 2, 3]) | Q(home_position__isnull=True),
-                name="check_home_position_0_3_or_null",
-            ),
-        ]
+                name="check_home_position_0_3_or_null",),
+                
+            models.UniqueConstraint(
+                fields=["works_block", "works_position"],
+                condition=Q(show_on_works=True) & Q(works_position__in=[1, 2, 3]),
+                name="uniq_works_block_pos_1_3_when_show_on_works",),
+            models.CheckConstraint(
+                condition=Q(works_position__in=[0, 1, 2, 3]) | Q(works_position__isnull=True),
+                name="check_works_position_0_3_or_null",),]
 
     def __str__(self):
         return self.title
@@ -101,6 +133,27 @@ class Case(models.Model):
                 raise ValidationError({"show_on_home": "На главной можно показать максимум 3 кейса."})
         else:
             self.home_position = None
+
+        if self.show_on_home:
+            if self.home_position not in (0, 1, 2, 3):
+                raise ValidationError({"home_position": "Выбери позицию 1, 2, 3 или Пустая позиция."})
+
+            qs = Case.objects.filter(show_on_home=True).exclude(pk=self.pk)
+            if qs.count() >= 3:
+                raise ValidationError({"show_on_home": "На главной можно показать максимум 3 кейса."})
+        else:
+            self.home_position = None
+
+        # --- our-works ---
+        if self.show_on_works:
+            if not self.works_block or self.works_block < 1:
+                raise ValidationError({"works_block": "Укажи номер блока (ряд), начиная с 1."})
+
+            if self.works_position not in (0, 1, 2, 3):
+                raise ValidationError({"works_position": "Выбери позицию 1, 2, 3 или Пустая позиция."})
+        else:
+            self.works_block = None
+            self.works_position = None  
 
 
 class CaseImage(models.Model):

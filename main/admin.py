@@ -22,7 +22,7 @@ class CaseAdmin(admin.ModelAdmin):
     readonly_fields = ("cover_preview",)
 
     fieldsets = (
-        ("Основное", {"fields": ("title", "slug", "subtitle", "description", "is_published", "sort", "show_on_home", "home_position",)}),
+        ("Основное", {"fields": ("title", "slug", "subtitle", "description", "is_published", "sort", "show_on_home", "home_position", "show_on_works", "works_block", "works_position")}),
         ("Картинки страницы", {"fields": ("cover_image","cover_alt", "cover_scale", "cover_preview", "hero_image", "mockup_image")}),
         ("Тексты блоков", {"fields": ("task_text", "execution_text", "result_text")}),
         ("Desktop / Mobile", {"fields": ("desktop_text", "desktop_image", "mobile_text", "mobile_image")}),)

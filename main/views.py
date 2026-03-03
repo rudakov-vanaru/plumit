@@ -6,6 +6,8 @@ from dotenv import load_dotenv
 from django.shortcuts import render, get_object_or_404
 from .models import Case
 from django.db.models import Case as DCase, When, Value, IntegerField
+from collections import defaultdict
+
 
 home_cases = (
     Case.objects.filter(is_published=True, show_on_home=True)
@@ -31,7 +33,18 @@ def services(request):
     return render(request, 'services.html')
 
 def works(request):
-    return render(request, 'our-works.html')
+    qs = (
+        Case.objects.filter(is_published=True, show_on_works=True, works_position__in=[1, 2, 3])
+        .order_by("works_block", "works_position", "created_at")
+    )
+
+    buckets = defaultdict(list)
+    for c in qs:
+        buckets[c.works_block].append(c)
+
+    works_blocks = [buckets[k] for k in sorted(buckets.keys())]
+
+    return render(request, "our-works.html", {"works_blocks": works_blocks})
 
 def techimpuls(request):
     return render(request, 'techimpuls.html')
