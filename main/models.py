@@ -70,6 +70,18 @@ class Case(models.Model):
         null=True,
     )
 
+    sphera_bg_image = models.ImageField(
+    "Фон блока (sphera)",
+    upload_to="cases/sphera/",
+    blank=True,
+    null=True)
+
+    contact_bg_image = models.ImageField(
+    "Фон блока формы",
+    upload_to="cases/contact/",
+    blank=True,
+    null=True)
+
 
 
 

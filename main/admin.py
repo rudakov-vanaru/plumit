@@ -23,7 +23,7 @@ class CaseAdmin(admin.ModelAdmin):
 
     fieldsets = (
         ("Основное", {"fields": ("title", "slug", "subtitle", "description", "is_published", "sort", "show_on_home", "home_position", "show_on_works", "works_block", "works_position")}),
-        ("Картинки страницы", {"fields": ("cover_image","cover_alt", "cover_scale", "cover_preview", "hero_image", "mockup_image")}),
+        ("Картинки страницы", {"fields": ("cover_image","cover_alt", "cover_scale", "cover_preview", "hero_image", "mockup_image", "sphera_bg_image", "contact_bg_image")}),
         ("Тексты блоков", {"fields": ("task_text", "execution_text", "result_text")}),
         ("Desktop / Mobile", {"fields": ("desktop_text", "desktop_image", "mobile_text", "mobile_image")}),)
     
@@ -39,5 +39,7 @@ class CaseAdmin(admin.ModelAdmin):
         )
     
     class Media:
-        js = ("admin/js/case_cover_preview.js",)
+        js = ("admin/js/case_cover_preview.js",
+                "admin/js/clear_file_inputs.js",
+    )
 

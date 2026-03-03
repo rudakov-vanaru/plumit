@@ -16,7 +16,7 @@
   }
 
   function applyScale(img, scaleSelect) {
-    if (img || !scaleSelect) return;
+    if (!img || !scaleSelect) return;
     var v = parseInt(scaleSelect.value, 10);
     if (!v || isNaN(v)) v = 100;
     img.style.width = v + '%';

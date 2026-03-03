@@ -21,7 +21,7 @@
     <main>
         <div class="main-window page-case">
             <div class="block-img-main">
-                <img src="{% static 'img/techimpuls/main.webp' %}" alt="">
+                <img src="{{ case.hero_image.url }}" alt="">
             </div>
            
             <div class="container" style="z-index: 9;">
@@ -135,10 +135,10 @@
                         <span>Создание сайта/дизайна</span>
                     </div>
                     <div class="main-window-title GoM">
-                        <span>Techimpuls</span>
+                        <span>{{ case.title }}</span>
                     </div>
                     <div class="main-window-subtitle-desc GoL">
-                        <span>Разработка сайта и дизайна с уникальным дизайном для компании, специализирующаяся на промывке котлов, теплопроводов, теплообменников.</span>
+                        <span>{{ case.description|linebreaksbr }}</span>
                     </div>
 
                     <div class="main-window-button">
@@ -157,9 +157,9 @@
             </div>   
 
             <div class="bck-sphera-main-wind">
-            <div class="block-sphera-main">
-                <img src="{% static 'img/spheraMain.webp' %}" alt="">
-            </div>
+                <div class="block-sphera-main">
+                    <img src="{{ case.sphera_bg_image.url }}" alt="">
+                </div>
             </div>
         </div>
 
@@ -237,9 +237,7 @@
             </div>
             {% endfor %}
 
-            <div class="bck-fst-sdelki">
-                <img src="{% static 'img/sdelki/bckPGCS.webp' %}" alt="">
-            </div>
+
 
 
 
@@ -305,7 +303,7 @@
 
         <div class="contact-form">
             <div class="bck-contact" style="pointer-events: none;">
-                <img src="{% static 'img/formBck.webp' %}" alt="">
+                <img src="{{ case.contact_bg_image.url }}" alt="">
             </div>
             <div class="container">
                 <div class="contact-block-text">
