@@ -1865,3 +1865,21 @@ footer .container{
 .case-image.scale-60 img { width: 60%; }
 .case-image.scale-100 img { width: 100%; }
 .img-task--scaled { max-width: var(--w); margin: 0 auto; }
+
+.img-mobile-phone{
+    display:grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1cm;
+}
+
+@media (max-width: 576px){
+    .img-mobile-phone{
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.block-mobile-phone-img img{
+    width:100%;
+    height:auto;
+    display:block;
+}

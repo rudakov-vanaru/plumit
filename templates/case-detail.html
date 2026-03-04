@@ -21,7 +21,9 @@
     <main>
         <div class="main-window page-case">
             <div class="block-img-main">
-                <img src="{{ case.hero_image.url }}" alt="">
+               {% if case.hero_image %}
+                    <img src="{{ case.hero_image.url }}" alt="">
+                {% endif %}
             </div>
            
             <div class="container" style="z-index: 9;">
@@ -158,7 +160,9 @@
 
             <div class="bck-sphera-main-wind">
                 <div class="block-sphera-main">
-                    <img src="{{ case.sphera_bg_image.url }}" alt="">
+                    {% if case.sphera_bg_image %}
+                        <img src="{{ case.sphera_bg_image.url }}" alt="">
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -195,7 +199,10 @@
                 <div class="block-desk-vr">
                     <div class="text-block-desk">
                         <div class="title-block-desk GoM">
-                            <span><span class="gradient-text">Desktop</span> версия</span>
+                            <span>
+                                <span class="gradient-text">{{ case.desktop_title_gradient }}</span>
+                                {{ case.desktop_title_text }}
+                            </span>
                         </div>
                         {% if case.desktop_text %}
                         <div class="subtitle-block-desk GoL">
@@ -214,59 +221,117 @@
             
 
             {% for img in case.images.all|slice:":5" %}
-            <div class="container">
-                <div class="task page-case">
+                <div class="container">
+                    <div class="task page-case">
 
-                    {% if img.title %}
-                    <div class="title-task GoM">
-                        <span>{{ img.title }}</span>
+                        {% if img.title %}
+                        <div class="title-task GoM">
+                            <span>{{ img.title }}</span>
+                        </div>
+                        {% endif %}
+
+                        {% if img.subtitle %}
+                        <div class="subtitle-task GoL">
+                            <span>{{ img.subtitle|linebreaksbr }}</span>
+                        </div>
+                        {% endif %}
+
+                        <div class="img-task {% if img.scale != 100 %}img-task--scaled{% endif %}" style="--w: {{ img.scale }}%;">
+                            <img src="{{ img.image.url }}" alt="">
+                        </div>
+
                     </div>
-                    {% endif %}
-
-                    {% if img.subtitle %}
-                    <div class="subtitle-task GoL">
-                        <span>{{ img.subtitle|linebreaksbr }}</span>
-                    </div>
-                    {% endif %}
-
-                    <div class="img-task {% if img.scale != 100 %}img-task--scaled{% endif %}" style="--w: {{ img.scale }}%;">
-                        <img src="{{ img.image.url }}" alt="">
-                    </div>
-
                 </div>
-            </div>
             {% endfor %}
 
 
 
 
+         
+        
 
-
-
-            <div class="container">
-                <div class="block-desk-vr mobile-adapt">
-                    <div class="text-block-desk">
-                        <div class="title-block-desk GoM">
-                            <span><span class="gradient-text">Мобильная</span> версия</span>
+            
+            {% for b in case.mobile_blocks.all %}
+                {% if b.layout == "image_only" %}
+                    <div class="container">
+                        <div class="task page-case">
+                            <div class="img-task img-mobile-phone">
+                                {% for img in b.images.all %}
+                                    <div class="block-mobile-phone-img">
+                                        <img src="{{ img.image.url }}" alt="">
+                                    </div>
+                                {% endfor %}
+                            </div>
                         </div>
-                        {% if case.mobile_text %}
-                        <div class="subtitle-block-desk GoL">
-                            <span>{{ case.mobile_text|linebreaksbr }}</span>
-                        </div>
-                        {% endif %}
-                    </div>    
-
-                    {% if case.mobile_image %}
-                    <div class="img-block-desk imb-mobile-desk">
-                        <img src="{{ case.mobile_image.url }}" alt="">
                     </div>
-                    {% endif %}
-                </div>
-            </div>
+                {% else %}
+                    <div class="container">
+                        <div class="block-desk-vr mobile-adapt">
 
-        </div>
+                            {% if b.layout == "image_left" %}
+                                {% if b.image %}
+                                <div class="img-block-desk imb-mobile-desk">
+                                    <img src="{{ b.image.url }}" alt="">
+                                </div>
+                                {% endif %}
 
-         <div class="header-mobile-block">
+                                {% if b.title_gradient or b.title_text or b.text %}
+                                <div class="text-block-desk">
+                                    {% if b.title_gradient or b.title_text %}
+                                    <div class="title-block-desk GoM">
+                                        <span>
+                                            {% if b.title_gradient %}
+                                                <span class="gradient-text">{{ b.title_gradient }}</span>
+                                            {% endif %}
+                                            {{ b.title_text }}
+                                        </span>
+                                    </div>
+                                    {% endif %}
+
+                                    {% if b.text %}
+                                    <div class="subtitle-block-desk GoL">
+                                        <span>{{ b.text|linebreaksbr }}</span>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                                {% endif %}
+
+                            {% else %}
+                                {% if b.title_gradient or b.title_text or b.text %}
+                                <div class="text-block-desk">
+                                    {% if b.title_gradient or b.title_text %}
+                                    <div class="title-block-desk GoM">
+                                        <span>
+                                            {% if b.title_gradient %}
+                                                <span class="gradient-text">{{ b.title_gradient }}</span>
+                                            {% endif %}
+                                            {{ b.title_text }}
+                                        </span>
+                                    </div>
+                                    {% endif %}
+
+                                    {% if b.text %}
+                                    <div class="subtitle-block-desk GoL">
+                                        <span>{{ b.text|linebreaksbr }}</span>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                                {% endif %}
+
+                                {% if b.image %}
+                                <div class="img-block-desk imb-mobile-desk">
+                                    <img src="{{ b.image.url }}" alt="">
+                                </div>
+                                {% endif %}
+                            {% endif %}
+
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+
+            
+        <div class="header-mobile-block">
             <div class="header-x-mobile">
                 <svg width="25" height="21" viewBox="0 0 25 21" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M3.66113 1L21.3388 18.6777" stroke="white" stroke-width="2" stroke-linecap="round"/>
@@ -303,7 +368,9 @@
 
         <div class="contact-form">
             <div class="bck-contact" style="pointer-events: none;">
-                <img src="{{ case.contact_bg_image.url }}" alt="">
+                {% if case.contact_bg_image %}
+                    <img src="{{ case.contact_bg_image.url }}" alt="">
+                {% endif %}
             </div>
             <div class="container">
                 <div class="contact-block-text">

@@ -1,7 +1,7 @@
-# main/models.py
 from django.db import models
-from django.core.exceptions import ValidationError
 from django.db.models import Q
+from django.core.exceptions import ValidationError
+
 
 class Case(models.Model):
     title = models.CharField("Название", max_length=200)
@@ -71,16 +71,33 @@ class Case(models.Model):
     )
 
     sphera_bg_image = models.ImageField(
-    "Фон блока (sphera)",
-    upload_to="cases/sphera/",
-    blank=True,
-    null=True)
+
+        "Фон блока (sphera)",
+        upload_to="cases/sphera/",
+        blank=True,
+        null=True)
 
     contact_bg_image = models.ImageField(
-    "Фон блока формы",
-    upload_to="cases/contact/",
-    blank=True,
-    null=True)
+
+
+        "Фон блока формы",
+        upload_to="cases/contact/",
+        blank=True,
+        null=True)
+
+    desktop_title_gradient = models.CharField(
+        "Desktop заголовок (градиентная часть)",
+        max_length=80,
+        blank=True,
+        null=True)
+
+    desktop_title_text = models.CharField(
+        "Desktop заголовок (обычная часть)",
+        max_length=200,
+        blank=True,
+        null=True)
+
+
 
 
 
@@ -99,8 +116,6 @@ class Case(models.Model):
     desktop_text = models.TextField("Текст блока Desktop", blank=True)
     desktop_image = models.ImageField("Картинка Desktop (macbook)", upload_to="cases/desktop/", blank=True, null=True)
 
-    mobile_text = models.TextField("Текст блока Mobile", blank=True)
-    mobile_image = models.ImageField("Картинка Mobile (iphone)", upload_to="cases/mobile/", blank=True, null=True)
 
     is_published = models.BooleanField("Опубликовано", default=True)
     sort = models.PositiveIntegerField("Порядок", default=0)
@@ -146,16 +161,6 @@ class Case(models.Model):
         else:
             self.home_position = None
 
-        if self.show_on_home:
-            if self.home_position not in (0, 1, 2, 3):
-                raise ValidationError({"home_position": "Выбери позицию 1, 2, 3 или Пустая позиция."})
-
-            qs = Case.objects.filter(show_on_home=True).exclude(pk=self.pk)
-            if qs.count() >= 3:
-                raise ValidationError({"show_on_home": "На главной можно показать максимум 3 кейса."})
-        else:
-            self.home_position = None
-
         # --- our-works ---
         if self.show_on_works:
             if not self.works_block or self.works_block < 1:
@@ -166,6 +171,107 @@ class Case(models.Model):
         else:
             self.works_block = None
             self.works_position = None  
+
+
+class CaseMobileBlock(models.Model):
+    LAYOUT_CHOICES = (
+        ("image_left", "Картинка слева, текст справа"),
+        ("image_right", "Картинка справа, текст слева"),
+         ("image_only", "Оставить фото без текста"),
+    )
+
+    case = models.ForeignKey(
+        "Case",
+        on_delete=models.CASCADE,
+        related_name="mobile_blocks",
+        verbose_name="Кейс"
+    )
+
+    # можно оставить пустыми — тогда будет просто картинка
+    title_gradient = models.CharField("Заголовок (градиент)", max_length=80, blank=True, null=True)
+    title_text = models.CharField("Заголовок (текст)", max_length=200, blank=True, null=True)
+    text = models.TextField("Текст", blank=True, null=True)
+
+    # можно оставить пустым, но обычно item без картинки не нужен
+    image = models.ImageField(upload_to="cases/mobile/items/", blank=True, null=True)
+
+    layout = models.CharField("Расположение", max_length=20, choices=LAYOUT_CHOICES, default="image_right")
+    order = models.PositiveIntegerField("Порядок", default=0)
+
+    class Meta:
+        ordering = ["order", "id"]
+        verbose_name = "Моб. элемент"
+        verbose_name_plural = "Моб. элементы"
+
+    class CaseMobileBlock(models.Model):
+
+        LAYOUT_CHOICES = (
+
+            ("image_left", "Картинка слева, текст справа"),
+            ("image_right", "Картинка справа, текст слева"),
+            ("image_only", "Оставить фото без текста"),)
+
+    case = models.ForeignKey(
+        "Case",
+        on_delete=models.CASCADE,
+        related_name="mobile_blocks",
+        verbose_name="Кейс",
+    )
+
+    title_gradient = models.CharField("Заголовок (градиент)", max_length=80, blank=True, null=True)
+    title_text = models.CharField("Заголовок (текст)", max_length=200, blank=True, null=True)
+    text = models.TextField("Текст", blank=True, null=True)
+
+    image = models.ImageField(upload_to="cases/mobile/items/", blank=True, null=True)
+
+    layout = models.CharField("Расположение", max_length=20, choices=LAYOUT_CHOICES, default="image_right")
+    order = models.PositiveIntegerField("Порядок", default=0)
+
+    class Meta:
+        ordering = ["order", "id"]
+        verbose_name = "Моб. элемент"
+        verbose_name_plural = "Моб. элементы"
+
+    def clean(self):
+        super().clean()
+
+        if self.layout == "image_only":
+            if self.title_gradient or self.title_text or self.text:
+                raise ValidationError({
+                    "title_gradient": "В режиме 'Фото без текста' заголовки/текст должны быть пустыми.",
+                    "title_text": "В режиме 'Фото без текста' заголовки/текст должны быть пустыми.",
+                    "text": "В режиме 'Фото без текста' заголовки/текст должны быть пустыми.",
+                })
+
+            if self.image:
+                raise ValidationError({
+                    "image": "В режиме 'Фото без текста' не используй поле 'Картинка'. Добавляй фото ниже (до 4)."
+                })
+
+            if self.pk and self.images.count() > 4:
+                raise ValidationError("В одном блоке можно максимум 4 фотографии.")
+        else:
+            if self.pk and self.images.exists():
+                raise ValidationError("Доп. фотографии можно добавлять только в режиме 'Фото без текста'.")
+
+
+
+class CaseMobileBlockImage(models.Model):
+    block = models.ForeignKey(
+        "CaseMobileBlock",
+        on_delete=models.CASCADE,
+        related_name="images",
+    )
+    image = models.ImageField(upload_to="cases/mobile/items/")
+    order = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        ordering = ["order", "id"]
+
+    def __str__(self):
+        return f"Block #{self.block_id} image #{self.id}"
+
+
 
 
 class CaseImage(models.Model):
