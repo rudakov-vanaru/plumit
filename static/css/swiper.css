@@ -1,36 +1,44 @@
 .swiper {
     max-width: 650px;
     height: 100%;
-  }
+}
 
-  .swiper-slide {
+.swiper-slide {
     text-align: start;
     font-size: 18px;
     /* background: #a73c3c; */
     display: flex;
     justify-content: center;
     align-items: center;
-  }
+}
 
-  .rev-info-block-swiper{
-        display: flex;
-        justify-content: space-between;
-        
-  }
-  .swiper-button-next, .swiper-rtl .swiper-button-prev {
-    right: inherit;
-    left: 60px;
-    top: inherit;
-    bottom: -20%;
+.rev-info-block-swiper{
+    display: flex;
+    justify-content: space-between;
+}
+
+/* Кнопки навигации (оставлено, но сделано без конфликтов) */
+.block-swiper{ position: relative; }
+.block-swiper .swiper{ overflow: visible; }
+
+.block-swiper .swiper-button-next,
+.block-swiper .swiper-button-prev{
+    position: absolute;
+    top: auto;
+    bottom: 30px;   /* ниже текста */
     color: #fff;
 }
-.swiper-button-prev, .swiper-rtl .swiper-button-next {
-    left: var(--swiper-navigation-sides-offset,0px);
+
+.block-swiper .swiper-button-prev{
+    left: -1.5cm;    /* влево */
     right: auto;
-    top: inherit;
-    bottom: -20%;
-    color: #fff;
 }
+
+.block-swiper .swiper-button-next{
+    right: -1.5cm;   /* вправо */
+    left: auto;
+}
+
 .swiper-button-next:after, .swiper-rtl .swiper-button-prev:after {
     content: " ";
 }

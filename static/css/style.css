@@ -1883,3 +1883,52 @@ footer .container{
     height:auto;
     display:block;
 }
+
+
+.swiper {
+    max-width: 650px;
+    height: 100%;
+}
+
+.swiper-slide {
+    text-align: start;
+    font-size: 18px;
+    /* background: #a73c3c; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.rev-info-block-swiper{
+    display: flex;
+    justify-content: space-between;
+}
+
+/* === расположение кнопок (ЗАМЕНЕНО) === */
+.block-swiper{ position: relative; }
+.block-swiper .swiper{ overflow: visible; }
+
+.block-swiper .swiper-button-next,
+.block-swiper .swiper-button-prev{
+    top: auto;
+    bottom: 36px;
+    color: #fff;
+}
+
+.block-swiper .swiper-button-prev{
+    left: -1.5cm;
+    right: auto;
+}
+
+.block-swiper .swiper-button-next{
+    right: -1.5cm;
+    left: auto;
+}
+/* === конец замены === */
+
+.swiper-button-next:after, .swiper-rtl .swiper-button-prev:after {
+    content: " ";
+}
+.swiper-button-prev:after{
+    content: " ";
+}
