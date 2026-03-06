@@ -1195,7 +1195,7 @@ footer .container{
 }
 .info-page-case .container{
     position: relative;
-    z-index: 2;
+    z-index: 3;
 }
 .img-block-desk{
 
@@ -1890,3 +1890,82 @@ footer .container{
 }
 
 
+
+
+
+.info-page-case--desktop-bg{
+    position: relative;
+    overflow: visible;
+    padding: 80px 0;
+    z-index: 1;
+}
+
+.info-page-case--desktop-bg .desktop-bg-img{
+    position: absolute;
+    left: 50%;
+    top: -300px;
+    transform: translateX(-50%);
+    width: 100vw;
+    max-width: none;
+    height: calc(100% + 900px);
+    object-fit: cover;
+    object-position: center;
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* контент desktop-блока выше его фона */
+.info-page-case--desktop-bg > .container{
+    position: relative;
+    z-index: 1;
+}
+
+/* весь контент ниже desktop-блока выше его фона */
+.page-case__content{
+    position: relative;
+    z-index: 2;
+}
+
+.page-case__content .container,
+.page-case__content .task,
+.page-case__content .block-desk-vr,
+.page-case__content .mobile-adapt{
+    position: relative;
+    z-index: 2;
+}
+
+/* ===== фон отдельной фотографии ===== */
+
+.case-gallery-item{
+    position: relative;
+    overflow: visible;
+}
+
+/* фон конкретной фотографии выходит выше и ниже блока */
+.case-gallery-item__bg{
+    position: absolute;
+    left: 50%;
+    top: -120px;
+    transform: translateX(-50%);
+    width: 100vw;
+    max-width: none;
+    height: auto;             
+    object-fit: cover;
+    object-position: center;
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* контент фотографии поверх ее фона */
+.case-gallery-item > .container{
+    position: relative;
+    z-index: 2;
+}
+
+.case-gallery-item .task,
+.case-gallery-item .title-task,
+.case-gallery-item .subtitle-task,
+.case-gallery-item .img-task{
+    position: relative;
+    z-index: 2;
+}

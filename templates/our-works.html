@@ -158,8 +158,7 @@
                                     <div class="main-portfolio-img">
                                     {% if case.cover_image %}
                                         <img class="cover-img" src="{{ case.cover_image.url }}" alt="{{ case.cover_alt|default:case.title }}">
-                                    {% else %}
-                                        <img class="cover-img" src="{% static 'img/stBlock.webp' %}" alt="{{ case.title }}">
+
                                     {% endif %}
                                     </div>
                                     <div class="title GoM"><span>{{ case.title }}</span></div>

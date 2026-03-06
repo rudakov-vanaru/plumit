@@ -4,10 +4,10 @@ from django.utils.html import format_html
 from .models import Case, CaseImage, CaseMobileBlock, CaseMobileBlockImage
 
 
-class CaseImageInline(admin.TabularInline):
+class CaseImageInline(admin.StackedInline):
     model = CaseImage
     extra = 1
-    fields = ("image", "scale", "title", "subtitle", "sort")
+    fields = ("image","bg_image",  "scale", "title", "subtitle", "sort")
     ordering = ("sort",)
 
 
@@ -58,7 +58,7 @@ class CaseAdmin(admin.ModelAdmin):
         ("Тексты блоков", {"fields": ("task_text", "execution_text", "result_text")}),
         ("Desktop / Mobile", {"fields": (
             "desktop_text", "desktop_image",
-            "desktop_title_gradient", "desktop_title_text",
+            "desktop_title_gradient", "desktop_title_text", "desktop_bg_image"
         )}),
     )
 

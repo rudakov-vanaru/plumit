@@ -96,6 +96,13 @@ class Case(models.Model):
         max_length=200,
         blank=True,
         null=True)
+    
+    desktop_bg_image = models.ImageField(
+        "Фон блока Desktop",
+        upload_to="cases/desktop/bg/",
+        blank=True,
+        null=True,
+    )
 
 
 
@@ -286,6 +293,7 @@ class CaseImage(models.Model):
 
     case = models.ForeignKey(Case, on_delete=models.CASCADE, related_name="images", verbose_name="Кейс")
     image = models.ImageField("Фото", upload_to="cases/gallery/")
+    bg_image = models.ImageField("Фон блока", upload_to="cases/gallery/bg/", blank=True, null=True)
     scale = models.PositiveSmallIntegerField("Масштаб", choices=SCALE_CHOICES, default=SCALE_100)
     title = models.CharField("Заголовок под фото", max_length=200, blank=True)
     subtitle = models.TextField("Текст под фото", blank=True)
