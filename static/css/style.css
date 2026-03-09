@@ -371,6 +371,11 @@ header{
     flex-direction: column;
     align-items: center;
 }
+
+.main-all-portfolio + .main-all-portfolio{
+    margin-top: 57px; /* примерно 1.5 см */
+}
+
 .block-portfolio-sphera{
     position: absolute;
     top: -27%;
@@ -1968,4 +1973,23 @@ footer .container{
 .case-gallery-item .img-task{
     position: relative;
     z-index: 2;
+}
+
+
+#works-list {
+    width: 100%;
+}
+
+.works-more-wrap {
+    margin-top: 57px;
+}
+
+#show-more-cases {
+    display: block;
+    cursor: pointer;
+}
+
+#show-more-cases.is-loading {
+    pointer-events: none;
+    opacity: 0.6;
 }

@@ -23,7 +23,7 @@
         <div class="main-window page-case">
             <div class="block-img-main">
                {% if case.hero_image %}
-                    <img src="{{ case.hero_image.url }}" alt="">
+                    <img src="{{ case.hero_image.url }}" alt="{{ case.cover_alt|default:case.title }}">
                 {% endif %}
             </div>
            
@@ -155,16 +155,16 @@
                 
 
                 {% if case.mockup_image %}
-                <div class="main-mockup sdelki">
-                    <img src="{{ case.mockup_image.url }}" alt="">
-                </div>
+                    <div class="main-mockup sdelki">
+                        <img src="{{ case.mockup_image.url }}" alt="{{ case.mockup_alt|default:case.title }}">
+                    </div>
                 {% endif %}
             </div>   
 
             <div class="bck-sphera-main-wind">
                 <div class="block-sphera-main">
                     {% if case.sphera_bg_image %}
-                        <img src="{{ case.sphera_bg_image.url }}" alt="">
+                        <img src="{{ case.sphera_bg_image.url }}" alt="{{ case.sphera_bg_alt|default:case.title }}">
                     {% endif %}
                 </div>
             </div>
@@ -200,7 +200,7 @@
         <div class="info-page-case info-page-case--desktop-bg">
 
             {% if case.desktop_bg_image %}
-                <img class="desktop-bg-img" src="{{ case.desktop_bg_image.url }}" alt="">
+                <img class="desktop-bg-img" src="{{ case.desktop_bg_image.url }}" alt="{{ case.desktop_bg_alt|default:case.title }}">
             {% endif %}
             <div class="container">
                 <div class="block-desk-vr">
@@ -221,9 +221,9 @@
                     </div>
 
                     {% if case.desktop_image %}
-                    <div class="img-block-desk">
-                        <img src="{{ case.desktop_image.url }}" alt="">
-                    </div>
+                        <div class="img-block-desk">
+                            <img src="{{ case.desktop_image.url }}" alt="{{ case.desktop_image_alt|default:case.title }}">
+                        </div>
                     {% endif %}
                 </div>
             </div>
@@ -234,7 +234,7 @@
             {% for img in case.images.all|slice:":5" %}
                 <div class="case-gallery-item">
                     {% if img.bg_image %}
-                        <img class="case-gallery-item__bg" src="{{ img.bg_image.url }}" alt="">
+                        <img class="case-gallery-item__bg" src="{{ img.bg_image.url }}" alt="{{ img.bg_alt|default:img.title|default:case.title }}">
                     {% endif %}
                     <div class="container">
                         <div class="task page-case">
@@ -252,7 +252,7 @@
                             {% endif %}
 
                             <div class="img-task {% if img.scale != 100 %}img-task--scaled{% endif %}" style="--w: {{ img.scale }}%;">
-                                <img src="{{ img.image.url }}" alt="">
+                                <img src="{{ img.image.url }}" alt="{{ img.image_alt|default:img.title|default:case.title }}">
                             </div>
 
                         </div>
@@ -273,7 +273,7 @@
                                 <div class="img-task img-mobile-phone">
                                     {% for img in b.images.all %}
                                         <div class="block-mobile-phone-img">
-                                            <img src="{{ img.image.url }}" alt="">
+                                            <img src="{{ img.image.url }}" alt="{{ img.alt|default:case.title }}">
                                         </div>
                                     {% endfor %}
                                 </div>
@@ -285,9 +285,9 @@
 
                                 {% if b.layout == "image_left" %}
                                     {% if b.image %}
-                                    <div class="img-block-desk imb-mobile-desk">
-                                        <img src="{{ b.image.url }}" alt="">
-                                    </div>
+                                        <div class="img-block-desk imb-mobile-desk">
+                                            <img src="{{ b.image.url }}" alt="{{ b.image_alt|default:b.title_text|default:case.title }}">
+                                        </div>
                                     {% endif %}
 
                                     {% if b.title_gradient or b.title_text or b.text %}
@@ -334,9 +334,9 @@
                                     {% endif %}
 
                                     {% if b.image %}
-                                    <div class="img-block-desk imb-mobile-desk">
-                                        <img src="{{ b.image.url }}" alt="">
-                                    </div>
+                                        <div class="img-block-desk imb-mobile-desk">
+                                            <img src="{{ b.image.url }}" alt="{{ b.image_alt|default:b.title_text|default:case.title }}">
+                                        </div>
                                     {% endif %}
                                 {% endif %}
 
@@ -386,7 +386,7 @@
         <div class="contact-form">
             <div class="bck-contact" style="pointer-events: none;">
                 {% if case.contact_bg_image %}
-                    <img src="{{ case.contact_bg_image.url }}" alt="">
+                    <img src="{{ case.contact_bg_image.url }}" alt="{{ case.contact_bg_alt|default:case.title }}">
                 {% endif %}
             </div>
             <div class="container">

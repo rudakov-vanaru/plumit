@@ -18,6 +18,7 @@
         <link rel="stylesheet" href="{% static 'css/checkbox.css' %}">
         <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
         <link rel="stylesheet" href="{% static 'css/modal.css' %}">
+        <link rel="stylesheet" href="{% static 'css/style.css' %}?v=999">
 
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css">
     </head>
@@ -150,25 +151,21 @@
                             <div class="services-title case-title GoM">
                                 <span>Кейсы</span>
                             </div>
-                            {% for block in works_blocks %}
-                            <div class="main-all-portfolio">
-                                {% for case in block %}
-                                <a href="{% url 'case_detail' slug=case.slug %}"
-                                    class="main-portfolio-us-block {% if case.cover_scale == 100 %}rdBlock{% elif case.cover_scale == 60 %}stBlock{% else %}leBlock{% endif %}">
-                                    <div class="main-portfolio-img">
-                                    {% if case.cover_image %}
-                                        <img class="cover-img" src="{{ case.cover_image.url }}" alt="{{ case.cover_alt|default:case.title }}">
-
-                                    {% endif %}
-                                    </div>
-                                    <div class="title GoM"><span>{{ case.title }}</span></div>
-                                    {% if case.subtitle %}
-                                    <div class="subtitle GoL"><span>{{ case.subtitle }}</span></div>
-                                    {% endif %}
-                                </a>
-                                {% endfor %}
+                            <div id="works-list">
+                                {% include "includes/works_blocks.html" with works_blocks=works_blocks %}
                             </div>
-                            {% endfor %}
+
+                            {% if has_next %}
+                                <div class="main-window-button works-more-wrap" id="works-more-wrap">
+                                    <a href="#"
+                                    class="GoM"
+                                    id="show-more-cases"
+                                    data-url="{% url 'works' %}"
+                                    data-next-page="{{ next_page }}">
+                                        <span>Показать еще</span>
+                                    </a>
+                                </div>
+                            {% endif %}
                         
                             <!-- <div class="main-window-button">
                                 <a href="#" class="GoM">
@@ -612,6 +609,7 @@
     <!-- Masked Input -->
     <script src="https://snipp.ru/cdn/maskedinput/jquery.maskedinput.min.js"></script>
     <script src="{% static 'js/script.js' %}"></script>
+    <script src="{% static 'js/works-pagination.js' %}"></script>
     <script src="{% static 'telegramform/js/telegramform.js' %}"></script>
 
 </body>

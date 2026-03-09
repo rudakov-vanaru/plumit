@@ -8,6 +8,11 @@ from .models import Case
 from django.db.models import Case as DCase, When, Value, IntegerField
 from collections import defaultdict
 
+from django.http import JsonResponse
+from django.core.paginator import Paginator
+from django.template.loader import render_to_string
+
+
 
 home_cases = (
     Case.objects.filter(is_published=True, show_on_home=True)
@@ -32,9 +37,18 @@ def index(request):
 def services(request):
     return render(request, 'services.html')
 
-def works(request):
+
+
+
+
+def get_works_blocks():
     qs = (
-        Case.objects.filter(is_published=True, show_on_works=True, works_position__in=[1, 2, 3])
+        Case.objects.filter(
+            is_published=True,
+            show_on_works=True,
+            works_block__isnull=False,
+            works_position__in=[1, 2, 3],
+        )
         .order_by("works_block", "works_position", "created_at")
     )
 
@@ -42,9 +56,41 @@ def works(request):
     for c in qs:
         buckets[c.works_block].append(c)
 
-    works_blocks = [buckets[k] for k in sorted(buckets.keys())]
+    return [buckets[k] for k in sorted(buckets.keys())]
 
-    return render(request, "our-works.html", {"works_blocks": works_blocks})
+
+def works(request):
+    all_blocks = get_works_blocks()
+
+    # 1 страница = 1 блок кейсов
+    paginator = Paginator(all_blocks, 1)
+    page_number = request.GET.get("page", 1)
+    page_obj = paginator.get_page(page_number)
+
+    current_blocks = page_obj.object_list
+
+    is_ajax = request.headers.get("x-requested-with") == "XMLHttpRequest"
+
+    if is_ajax:
+        html = render_to_string(
+            "includes/works_blocks.html",
+            {"works_blocks": current_blocks},
+            request=request,
+        )
+
+        return JsonResponse({
+            "html": html,
+            "has_next": page_obj.has_next(),
+            "next_page": page_obj.next_page_number() if page_obj.has_next() else None,
+        })
+
+    return render(request, "our-works.html", {
+        "works_blocks": current_blocks,
+        "has_next": page_obj.has_next(),
+        "next_page": page_obj.next_page_number() if page_obj.has_next() else None,
+    })
+
+
 
 def techimpuls(request):
     return render(request, 'techimpuls.html')

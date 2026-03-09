@@ -42,6 +42,11 @@ class Case(models.Model):
         null=True,
     )
     cover_alt = models.CharField("Alt обложки", max_length=255, blank=True)
+    mockup_alt = models.CharField("Alt mockup", max_length=255, blank=True) 
+    sphera_bg_alt = models.CharField("Alt фона блока sphera", max_length=255, blank=True)
+    desktop_bg_alt = models.CharField("Alt фона блока Desktop", max_length=255, blank=True)
+    desktop_image_alt = models.CharField("Alt картинки Desktop", max_length=255, blank=True)
+    contact_bg_alt = models.CharField("Alt фона блока формы", max_length=255, blank=True)
 
         # Показ и порядок на странице our-works
     show_on_works = models.BooleanField("Показывать на странице 'Наши проекты'", default=True)
@@ -230,7 +235,7 @@ class CaseMobileBlock(models.Model):
     text = models.TextField("Текст", blank=True, null=True)
 
     image = models.ImageField(upload_to="cases/mobile/items/", blank=True, null=True)
-
+    image_alt = models.CharField("Alt картинки", max_length=255, blank=True, null=True)
     layout = models.CharField("Расположение", max_length=20, choices=LAYOUT_CHOICES, default="image_right")
     order = models.PositiveIntegerField("Порядок", default=0)
 
@@ -270,6 +275,7 @@ class CaseMobileBlockImage(models.Model):
         related_name="images",
     )
     image = models.ImageField(upload_to="cases/mobile/items/")
+    alt = models.CharField("Alt картинки", max_length=255, blank=True)
     order = models.PositiveIntegerField(default=0)
 
     class Meta:
@@ -294,6 +300,8 @@ class CaseImage(models.Model):
     case = models.ForeignKey(Case, on_delete=models.CASCADE, related_name="images", verbose_name="Кейс")
     image = models.ImageField("Фото", upload_to="cases/gallery/")
     bg_image = models.ImageField("Фон блока", upload_to="cases/gallery/bg/", blank=True, null=True)
+    image_alt = models.CharField("Alt фото", max_length=255, blank=True)
+    bg_alt = models.CharField("Alt фона блока", max_length=255, blank=True)
     scale = models.PositiveSmallIntegerField("Масштаб", choices=SCALE_CHOICES, default=SCALE_100)
     title = models.CharField("Заголовок под фото", max_length=200, blank=True)
     subtitle = models.TextField("Текст под фото", blank=True)

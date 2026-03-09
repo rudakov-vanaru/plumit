@@ -7,7 +7,7 @@ from .models import Case, CaseImage, CaseMobileBlock, CaseMobileBlockImage
 class CaseImageInline(admin.StackedInline):
     model = CaseImage
     extra = 1
-    fields = ("image","bg_image",  "scale", "title", "subtitle", "sort")
+    fields = ("image", "image_alt", "bg_image", "bg_alt", "scale", "title", "subtitle", "sort")
     ordering = ("sort",)
 
 
@@ -15,14 +15,14 @@ class CaseMobileBlockInline(admin.StackedInline):
     model = CaseMobileBlock
     extra = 0
     show_change_link = True
-    fields = ("layout", "order", "image", "title_gradient", "title_text", "text")
+    fields = ("layout", "order", "image", "image_alt", "title_gradient", "title_text", "text")
 
 
 class CaseMobileBlockImageInline(admin.TabularInline):
     model = CaseMobileBlockImage
     extra = 0
     max_num = 4
-    fields = ("image", "order")
+    fields = ("image", "alt","order")
     ordering = ("order",)
 
 
@@ -51,15 +51,19 @@ class CaseAdmin(admin.ModelAdmin):
             "show_on_home", "home_position",
             "show_on_works", "works_block", "works_position",
         )}),
+
         ("Картинки страницы", {"fields": (
             "cover_image", "cover_alt", "cover_scale", "cover_preview",
-            "hero_image", "mockup_image", "sphera_bg_image", "contact_bg_image",
-        )}),
+            "hero_image",
+            "mockup_image", "mockup_alt",
+            "sphera_bg_image", "sphera_bg_alt",
+            "contact_bg_image", "contact_bg_alt",)}),
+
         ("Тексты блоков", {"fields": ("task_text", "execution_text", "result_text")}),
+
         ("Desktop / Mobile", {"fields": (
-            "desktop_text", "desktop_image",
-            "desktop_title_gradient", "desktop_title_text", "desktop_bg_image"
-        )}),
+            "desktop_text", "desktop_image", "desktop_image_alt",
+            "desktop_title_gradient", "desktop_title_text", "desktop_bg_image", "desktop_bg_alt")}),
     )
 
     @admin.display(description="Превью обложки")
